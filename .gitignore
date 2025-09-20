@@ -1,0 +1,25 @@
+# Env files
+.env
+.env.*
+!.env.example
+
+# Flyway config overrides
+flyway/conf/*.bak
+flyway/conf/*.tmp
+flyway/conf/flyway.user.toml
+
+# Flyway generated logs/history
+flyway/sql/*~ 
+flyway/sql/*.swp
+flyway/sql/*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

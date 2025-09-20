@@ -1,0 +1,16 @@
+{
+  "name": "velony-database",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "migrate": "dotenv -e .env -- flyway -configFiles=flyway/conf/flyway.conf migrate",
+    "info": "dotenv -e .env -- flyway -configFiles=flyway/conf/flyway.conf info",
+    "validate": "dotenv -e .env -- flyway -configFiles=flyway/conf/flyway.conf validate",
+    "repair": "dotenv -e .env -- flyway -configFiles=flyway/conf/flyway.conf repair",
+    "clean": "dotenv -e .env -- flyway -configFiles=flyway/conf/flyway.conf clean",
+    "baseline": "dotenv -e .env -- flyway -configFiles=flyway/conf/flyway.conf baseline"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^10.0.0"
+  }
+}
