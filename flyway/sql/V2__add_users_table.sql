@@ -1,0 +1,26 @@
+CREATE TABLE public.users (
+    id serial PRIMARY KEY,
+    uuid uuid DEFAULT gen_random_uuid () NOT NULL UNIQUE,
+    username varchar(50) NOT NULL UNIQUE,
+    email varchar(100) NOT NULL UNIQUE,
+    password_hash text NOT NULL,
+    phone_number varchar(20),
+    profile_picture_url text,
+    created_at timestamp DEFAULT now(),
+    updated_at timestamp DEFAULT now()
+);
+
+CREATE OR REPLACE FUNCTION public.set_updated_at ()
+    RETURNS TRIGGER
+    AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_users_set_updated_at
+    BEFORE UPDATE ON public.users
+    FOR EACH ROW
+    EXECUTE FUNCTION public.set_updated_at ();
