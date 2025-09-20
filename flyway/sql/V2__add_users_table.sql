@@ -1,6 +1,7 @@
 CREATE TABLE public.users (
     id serial PRIMARY KEY,
     uuid uuid DEFAULT gen_random_uuid () NOT NULL UNIQUE,
+    name varchar(50) NOT NULL,
     username varchar(50) NOT NULL UNIQUE,
     email varchar(100) UNIQUE,
     password_hash text,
