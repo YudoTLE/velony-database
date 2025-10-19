@@ -2,21 +2,32 @@ name: Flyway Migrate
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
 
 jobs:
   migrate:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Install Flyway
-        uses: suzuki-shunsuke/github-action-flyway@v2
-        with:
-          flyway-version: '11.13.0'
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Flyway CLI
+        run: |
+          curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/11.13.0/flyway-commandline-11.13.0-linux-x64.tar.gz -o flyway.tar.gz
+          tar -xzf flyway.tar.gz
+          sudo ln -s `pwd`/flyway-11.13.0/flyway /usr/local/bin/flyway
+
       - name: Run Flyway migrations
         env:
           FLYWAY_URL: jdbc:postgresql://db.ssedpniisaibygkwrsbm.supabase.co:5432/postgres?sslmode=require
           FLYWAY_USER: postgres.ssedpniisaibygkwrsbm
           FLYWAY_PASSWORD: ${{ secrets.DB_PASS }}
-        run: flyway -locations=filesystem:flyway/sql -configFiles=flyway/conf/flyway.conf migrate
+        run: |
+          echo "Running Flyway migrations..."
+          flyway \
+            -url=$FLYWAY_URL \
+            -user=$FLYWAY_USER \
+            -password=$FLYWAY_PASSWORD \
+            -locations=filesystem:flyway/sql \
+            -configFiles=flyway/conf/flyway.conf \
+            migrate
