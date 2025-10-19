@@ -11,11 +11,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Flyway CLI
+      - name: Install Flyway CLI (official download)
         run: |
-          curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/11.13.0/flyway-commandline-11.13.0-linux-x64.tar.gz -o flyway.tar.gz
+          curl -sSL https://download.red-gate.com/maven/release/org/flywaydb/flyway-commandline/11.13.0/flyway-commandline-11.13.0-linux-x64.tar.gz -o flyway.tar.gz
           tar -xzf flyway.tar.gz
-          sudo ln -s `pwd`/flyway-11.13.0/flyway /usr/local/bin/flyway
+          sudo ln -s "$(pwd)/flyway-11.13.0/flyway" /usr/local/bin/flyway
+          flyway -v
 
       - name: Run Flyway migrations
         env:
@@ -23,7 +24,6 @@ jobs:
           FLYWAY_USER: postgres.ssedpniisaibygkwrsbm
           FLYWAY_PASSWORD: ${{ secrets.DB_PASS }}
         run: |
-          echo "Running Flyway migrations..."
           flyway \
             -url=$FLYWAY_URL \
             -user=$FLYWAY_USER \
