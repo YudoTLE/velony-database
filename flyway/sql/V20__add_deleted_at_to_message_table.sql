@@ -1,0 +1,2 @@
+ALTER TABLE public.messages 
+ADD COLUMN deleted_at TIMESTAMP DEFAULT NULL;
